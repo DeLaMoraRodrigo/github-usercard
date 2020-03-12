@@ -23,8 +23,31 @@
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
+//"JesusCGuerrero", "DustinG98", "Callisto1981", "CodyFlys", "leachcoding"
+const followersArray = [];
 
-const followersArray = ["JesusCGuerrero", "DustinG98", "Callisto1981", "CodyFlys", "leachcoding"];
+axios.get("https://api.github.com/users/DeLaMoraRodrigo/followers")
+  .then( response => {
+    console.log(response);
+    response.data.forEach( val => {followersArray.push(val.login)});
+    console.log(followersArray);
+  })
+  .then( response => {
+    followersArray.forEach( val => {
+      let friendUrl = `https://api.github.com/users/${val}`;
+    
+      axios.get(friendUrl)
+        .then( response => {
+          document.querySelector(".cards").appendChild(cardCreator(response.data));
+        })
+        .catch ( error => {
+          console.log(`This is an error`, error);
+        })
+    })
+  })
+  .catch( error => {
+    console.log(`This is an error`, error);
+  })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -108,17 +131,17 @@ followersArray.forEach(val => {
   let url
 })
 
-followersArray.forEach(val => {
-  let friendUrl = `https://api.github.com/users/${val}`;
+// followersArray.forEach(val => {
+//   let friendUrl = `https://api.github.com/users/${val}`;
 
-  axios.get(friendUrl)
-    .then( response => {
-      document.querySelector(".cards").appendChild(cardCreator(response.data));
-    })
-    .catch ( error => {
-      console.log(`This is an error`, error);
-    })
-})
+//   axios.get(friendUrl)
+//     .then( response => {
+//       document.querySelector(".cards").appendChild(cardCreator(response.data));
+//     })
+//     .catch ( error => {
+//       console.log(`This is an error`, error);
+//     })
+// })
 
 /* List of LS Instructors Github username's: 
   tetondan
